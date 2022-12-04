@@ -1,12 +1,12 @@
 name: page generation CI/CD work-flow
 
 env:
-  MONGO_DATABASE_URI: ${{ secrets.MONGO_DATABASE_URI_E_COM }}
-  EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME_E_COM }}
-  EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD_E_COM }}
-  KEY_JWT: ${{ secrets.KEY_JWT_E_COM }}
-  DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD_E_COM}}
-  PORT: ${{ secrets.PORT_E_COM}}
+  MONGO_DATABASE_URI: ${{ secrets.MONGO_DATABASE_URI_DEVELOPMENT }}
+  EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME_DEVELOPMENT }}
+  EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD_DEVELOPMENT }}
+  KEY_JWT: ${{ secrets.KEY_JWT_DEVELOPMENT }}
+  DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD_DEVELOPMENT }}
+  PORT: ${{ secrets.PORT_DEVELOPMENT }}
 on:
   pull_request:
     branches: [ develop ]
