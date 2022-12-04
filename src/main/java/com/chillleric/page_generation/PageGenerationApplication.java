@@ -9,5 +9,4 @@ public class PageGenerationApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PageGenerationApplication.class, args);
 	}
-
 }
