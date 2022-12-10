@@ -74,7 +74,6 @@ public class UserController extends AbstractController<UserService> {
         @PutMapping(value = "update-user")
         public ResponseEntity<CommonResponse<String>> updateUser(@RequestBody UserRequest userRequest,
                         @RequestParam(required = true) String id, HttpServletRequest request) {
-                System.out.println(userRequest);
                 service.updateUserById(id, userRequest);
                 return new ResponseEntity<CommonResponse<String>>(
                                 new CommonResponse<String>(true, null, LanguageMessageKey.UPDATE_USER_SUCCESS,

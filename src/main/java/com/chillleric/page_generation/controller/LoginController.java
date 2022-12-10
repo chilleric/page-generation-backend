@@ -115,7 +115,6 @@ public class LoginController extends AbstractController<LoginService> {
         public ResponseEntity<CommonResponse<String>> getJwt(
                         @RequestParam String deviceId, @RequestParam String userId) {
                 String jwt = jwtValidation.generateToken(userId, deviceId);
-                System.out.println(jwt);
                 return new ResponseEntity<CommonResponse<String>>(
                                 new CommonResponse<String>(true, jwt, LanguageMessageKey.RESEND_VERIFY_EMAIL,
                                                 HttpStatus.OK.value()),
