@@ -120,4 +120,7 @@ public abstract class AbstractMongoRepo {
     }
   }
 
+  // public <T extends Class> long getTotalPage(Map<String, String> allParams) {
+  // Query query = this.generateQueryMongoDB(allParams, T.class, null, null, 0, 0)
+  // }
 }
