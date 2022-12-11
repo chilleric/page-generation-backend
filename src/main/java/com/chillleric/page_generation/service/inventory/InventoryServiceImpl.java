@@ -50,10 +50,11 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
         });
 
         Inventory inventory = inventories.get();
-        return Optional.of(new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
-                inventory.getTargetId(), inventory.getType(), inventory.getCss(),
-                inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
-                inventory.getNumber()));
+        return Optional.of(
+                preprocessResponse(new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
+                        inventory.getTargetId(), inventory.getType(), inventory.getCss(),
+                        inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
+                        inventory.getNumber())));
     }
 
     @Override
@@ -67,14 +68,79 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
         }
         return Optional.of(new ListWrapperResponse<InventoryResponse>(
                 inventories.stream()
-                        .map(inventory -> new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
-                                inventory.getTargetId(), inventory.getType(), inventory.getCss(),
-                                inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
-                                inventory.getNumber()))
+                        .map(inventory -> {
+                            return preprocessResponse(
+                                    new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
+                                            inventory.getTargetId(), inventory.getType(), inventory.getCss(),
+                                            inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
+                                            inventory.getNumber()));
+                        })
                         .collect(Collectors.toList()),
                 page,
                 pageSize,
                 repository.getTotalPage(allParams)));
+    }
+
+    @Override
+    public InventoryResponse preprocessResponse(InventoryResponse inventoryResponse) {
+        InventoryResponse result = inventoryResponse;
+        switch (inventoryResponse.getType()) {
+            case IMAGE:
+                // # TODO: mapping data into this
+                break;
+            case TITLE:
+                // # TODO: mapping data into this
+                break;
+            case SLIDER: {
+                result.setChildren(preprocessInventoryResquest(inventoryResponse.getTypeList().getChildren()));
+                break;
+            }
+            case LIST: {
+                result.setChildren(preprocessInventoryResquest(inventoryResponse.getTypeList().getChildren()));
+                break;
+            }
+            case COMPONENTS: {
+                result.setChildren(preprocessInventoryResquest(inventoryResponse.getChildren()));
+                break;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<InventoryRequest> preprocessInventoryResquest(List<InventoryRequest> inventoryRequest) {
+        List<InventoryRequest> result = inventoryRequest;
+
+        for (int i = 0; i < inventoryRequest.size(); i++) {
+            System.out.println(i);
+            switch (inventoryRequest.get(i).getType()) {
+                case COMPONENTS: {
+                    result.get(i).setChildren(preprocessInventoryResquest(inventoryRequest.get(i).getChildren()));
+                    break;
+                }
+                case LIST: {
+                    result.get(i).setChildren(preprocessInventoryResquest(
+                            inventoryRequest.get(i).getTypeList().getChildren()));
+                    break;
+                }
+                case SLIDER: {
+                    result.get(i).setChildren(preprocessInventoryResquest(
+                            inventoryRequest.get(i).getTypeList().getChildren()));
+                    break;
+                }
+                case TITLE: {
+                    // # TODO: mapping data into this
+                    break;
+                }
+                case IMAGE: {
+                    // # TODO: mapping data into this
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        return result;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.chillleric.page_generation.service.inventory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,6 +15,10 @@ public interface InventoryService {
 
     Optional<ListWrapperResponse<InventoryResponse>> findAll(Map<String, String> allParams, String keySort, int page,
             int pageSize, String sortField);
+
+    InventoryResponse preprocessResponse(InventoryResponse inventoryResponse);
+
+    List<InventoryRequest> preprocessInventoryResquest(List<InventoryRequest> inventoryRequest);
 
     void deleteById(String inventoryId);
 }
