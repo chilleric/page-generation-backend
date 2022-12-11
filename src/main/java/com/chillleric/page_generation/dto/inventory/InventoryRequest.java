@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.chillleric.page_generation.constant.LanguageMessageKey;
+import com.chillleric.page_generation.repository.inventory.Inventory;
 import com.chillleric.page_generation.repository.inventory.Inventory.InventoryEnum;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,6 +42,8 @@ public class InventoryRequest {
     @NotNull(message = LanguageMessageKey.INVENTORY_CHILDREN_REQUIRED)
     private List<InventoryRequest> children;
 
-    private InventoryRequest typeList;
+    @NotNull(message = LanguageMessageKey.INVENTORY_TYPE_LIST_REQUIRED)
+    private Inventory typeList;
+
     private int number;
 }
