@@ -6,6 +6,8 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.chillleric.page_generation.dto.inventory.InventoryRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,7 @@ public class Inventory {
 	private InventoryEnum type;
 	private Map<String, String> css;
 	private Map<String, Object> special;
-	private List<Inventory> children;
+	private List<InventoryRequest> children;
 	private Inventory typeList;
 	private int number;
 

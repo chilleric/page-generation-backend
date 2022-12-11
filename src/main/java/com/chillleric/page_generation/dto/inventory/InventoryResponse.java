@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InventoryResponse {
-    public String inventoryId;
+    public String _id;
     public String name;
     public String targetId;
     public InventoryEnum type;
     public Map<String, String> css;
     public Map<String, Object> special;
-    public List<Inventory> children;
+    public List<InventoryRequest> children;
     public Inventory typeList;
     public int number;
 }
