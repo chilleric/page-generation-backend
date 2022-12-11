@@ -16,5 +16,4 @@ public interface InventoryService {
             int pageSize, String sortField);
 
     void deleteById(String inventoryId);
-    // Optional<Inventory>
 }

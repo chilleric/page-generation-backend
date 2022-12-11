@@ -31,7 +31,6 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
                     throw new InvalidRequestException(error, LanguageMessageKey.INVENTORY_NAME_EXISTED);
                 });
 
-        // Inventory inventory = new Inventory();
         Inventory inventory = objectMapper.convertValue(inventoryRequest, Inventory.class);
         ObjectId inventoryId = new ObjectId();
         inventory.set_id(inventoryId);
@@ -48,7 +47,7 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
         });
 
         Inventory inventory = inventories.get().get(0);
-        return Optional.of(new InventoryResponse().generateInventoryResponse(inventory));
+        return Optional.of(new InventoryResponse(inventory));
     }
 
     @Override
@@ -61,7 +60,7 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
             return Optional.empty();
         }
         return Optional.of(new ListWrapperResponse<InventoryResponse>(
-                inventories.stream().map(inventory -> new InventoryResponse().generateInventoryResponse(inventory))
+                inventories.stream().map(inventory -> new InventoryResponse(inventory))
                         .collect(Collectors.toList()),
                 page,
                 pageSize,
@@ -70,14 +69,12 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
 
     @Override
     public void deleteById(String inventoryId) {
-        Optional<List<Inventory>> inventories = repository.getInventories(Map.ofEntries(Map.entry("_id", inventoryId)),
-                "", 0, 0, "");
-        inventories.orElseThrow(() -> {
-            throw new ResourceNotFoundException(LanguageMessageKey.INVENTORY_NOT_FOUND);
-        });
+        repository.getInventories(Map.ofEntries(Map.entry("_id", inventoryId)),
+                "", 0, 0, "").orElseThrow(() -> {
+                    throw new ResourceNotFoundException(LanguageMessageKey.INVENTORY_NOT_FOUND);
+                });
         // #### TODO: validate if any Template use
 
         repository.delete(Map.ofEntries(Map.entry("_id", inventoryId)));
     }
-
 }
