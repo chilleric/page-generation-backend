@@ -50,7 +50,10 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
         });
 
         Inventory inventory = inventories.get();
-        return Optional.of(new InventoryResponse(inventory));
+        return Optional.of(new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
+                inventory.getTargetId(), inventory.getType(), inventory.getCss(),
+                inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
+                inventory.getNumber()));
     }
 
     @Override
@@ -63,7 +66,11 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
             return Optional.empty();
         }
         return Optional.of(new ListWrapperResponse<InventoryResponse>(
-                inventories.stream().map(inventory -> new InventoryResponse(inventory))
+                inventories.stream()
+                        .map(inventory -> new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
+                                inventory.getTargetId(), inventory.getType(), inventory.getCss(),
+                                inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
+                                inventory.getNumber()))
                         .collect(Collectors.toList()),
                 page,
                 pageSize,

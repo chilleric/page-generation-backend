@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.chillleric.page_generation.inventory.AbstractInventory;
 import com.chillleric.page_generation.repository.inventory.Inventory;
 import com.chillleric.page_generation.repository.inventory.InventoryRepository;
 
+@Service
 public class InvenInventoryImpl extends AbstractInventory<InventoryRepository> implements InvenInventory {
 
     @Override
