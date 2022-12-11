@@ -134,4 +134,17 @@ public class LanguageMessageKey {
     public static final String UNIQUE_USER_PERMISSION = "uniqueUserPermission"; // One user has only one permission -
                                                                                 // Mỗi người dùng chỉ có một quyền duy
                                                                                 // nhất
+
+    public static final String INVENTORY_NAME_REQUIRED = "inventoryNameRequired";
+    public static final String INVENTORY_TARGET_ID_REQUIRED = "inventoryTargetIdRequired";
+    public static final String INVENTORY_TYPE_REQUIRED = "inventoryTypeRequired";
+    public static final String INVENTORY_CSS_REQUIRED = "inventoryCSSRequired";
+    public static final String INVENTORY_SPECIAL_REQUIRED = "inventorySpecialRequired";
+    public static final String INVENTORY_CHILDREN_REQUIRED = "inventoryChildrenRequired";
+
+    public static final String INVENTORY_NAME_EXISTED = "inventoryNameExisted";
+
+    public static final String INVENTORY_NOT_FOUND = "inventoryNotFound";
+
+    public static final String INVENTORY_CREATE_SUCCESS = "inventoryCreateSuccess";
 }

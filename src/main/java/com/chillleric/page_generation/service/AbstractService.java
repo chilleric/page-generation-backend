@@ -73,34 +73,6 @@ public abstract class AbstractService<r> {
     }
   }
 
-  // protected <T> T viewPointToRequest(T request, List<ViewPoint> viewPoints,
-  // Object source) {
-  // for (Field field : request.getClass().getDeclaredFields()) {
-  // boolean isEditable = false;
-  // field.setAccessible(true);
-  // for (ViewPoint thisView : viewPoints) {
-  // if (thisView.getKey().compareTo(field.getName()) == 0) {
-  // isEditable = true;
-  // break;
-  // }
-  // }
-  // if (!isEditable) {
-  // for (Field field1 : source.getClass().getDeclaredFields()) {
-  // field1.setAccessible(true);
-  // if (field1.getName().compareTo(field.getName()) == 0) {
-  // try {
-  // field.set(request, field1.get(source));
-  // } catch (IllegalArgumentException | IllegalAccessException e) {
-  // APP_LOGGER.error(e.getMessage());
-  // throw new BadSqlException(LanguageMessageKey.SERVER_ERROR);
-  // }
-  // }
-  // }
-  // }
-  // }
-  // return request;
-  // }
-
   protected Map<String, String> generateError(Class<?> clazz) {
     Field[] fields = clazz.getDeclaredFields();
     Map<String, String> result = new HashMap<>();

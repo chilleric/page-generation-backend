@@ -10,8 +10,6 @@ import com.chillleric.page_generation.exception.InvalidRequestException;
 public class PasswordValidator {
 
     public static void validatePassword(Map<String, String> errorObject, String password, String keyError) {
-        System.out.println(password);
-        System.out.println(Base64.isBase64(password));
         if (!Base64.isBase64(password)) {
             errorObject.put(keyError, "Password must be encoded!");
             throw new InvalidRequestException(errorObject, "Password must be encoded!");

@@ -26,8 +26,6 @@ public class UserRepositoryImpl extends AbstractMongoRepo implements UserReposit
 
     @Override
     public long getTotalPage(Map<String, String> allParams) {
-        Query query = generateQueryMongoDB(allParams, User.class, "", "", 0, 0);
-        long total = authenticationTemplate.count(query, User.class);
-        return total;
+        return getTotalPage(allParams, User.class);
     }
 }
