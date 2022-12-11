@@ -29,16 +29,13 @@ public class InventoryRepositoryImpl extends AbstractMongoRepo implements Invent
     @Override
     public void delete(Map<String, String> allParams) {
         Query query = generateQueryMongoDB(allParams, Inventory.class, "", "", 1, 1);
-        // Optional<Inventory> inventory = replaceFindOne(query, Inventory.class);
         authenticationTemplate.remove(query, Inventory.class);
 
     }
 
     @Override
     public long getTotalPage(Map<String, String> allParams) {
-        Query query = generateQueryMongoDB(allParams, Inventory.class, "", "", 0, 0);
-        long total = authenticationTemplate.count(query, Inventory.class);
-        return total;
+        return getTotalPage(allParams, Inventory.class);
     }
 
 }
