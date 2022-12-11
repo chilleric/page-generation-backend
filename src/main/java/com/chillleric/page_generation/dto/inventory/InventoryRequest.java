@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.chillleric.page_generation.constant.LanguageMessageKey;
-// import com.chillleric.page_generation.repository.inventory.Inventory;
 import com.chillleric.page_generation.repository.inventory.Inventory.InventoryEnum;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,15 +33,14 @@ public class InventoryRequest {
     private InventoryEnum type;
 
     @NotNull(message = LanguageMessageKey.INVENTORY_CSS_REQUIRED)
-    private Map<String, Object> css;
+    private Map<String, String> css;
 
     @NotNull(message = LanguageMessageKey.INVENTORY_SPECIAL_REQUIRED)
     private Map<String, Object> special;
 
-    // @NotNull(message = LanguageMessageKey.INVENTORY_CHILDREN_REQUIRED)
+    @NotNull(message = LanguageMessageKey.INVENTORY_CHILDREN_REQUIRED)
     private List<InventoryRequest> children;
 
-    // private String typeList;
     private InventoryRequest typeList;
     private int number;
 }

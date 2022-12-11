@@ -19,12 +19,10 @@ public class Inventory {
 	private String name;
 	private String targetId;
 	private InventoryEnum type;
-	private Map<String, Object> css;
+	private Map<String, String> css;
 	private Map<String, Object> special;
 	private List<Inventory> children;
 	private Inventory typeList;
-	// private List<String> children;
-	// private String typeList;
 	private int number;
 
 	public enum InventoryEnum {
