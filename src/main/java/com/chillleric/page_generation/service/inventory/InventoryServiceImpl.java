@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.chillleric.page_generation.constant.LanguageMessageKey;
@@ -14,6 +15,7 @@ import com.chillleric.page_generation.dto.inventory.InventoryRequest;
 import com.chillleric.page_generation.dto.inventory.InventoryResponse;
 import com.chillleric.page_generation.exception.InvalidRequestException;
 import com.chillleric.page_generation.exception.ResourceNotFoundException;
+import com.chillleric.page_generation.inventory.inventory.InvenInventory;
 import com.chillleric.page_generation.repository.inventory.Inventory;
 import com.chillleric.page_generation.repository.inventory.InventoryRepository;
 import com.chillleric.page_generation.service.AbstractService;
@@ -21,15 +23,17 @@ import com.chillleric.page_generation.service.AbstractService;
 @Service
 public class InventoryServiceImpl extends AbstractService<InventoryRepository> implements InventoryService {
 
+    @Autowired
+    private InvenInventory invenInventory;
+
     @Override
     public void createInventory(InventoryRequest inventoryRequest) {
         validate(inventoryRequest);
 
         Map<String, String> error = generateError(InventoryRequest.class);
-        repository.getInventories(Map.ofEntries(Map.entry("name", inventoryRequest.getName())), "", 0, 0,
-                "").orElseThrow(() -> {
-                    throw new InvalidRequestException(error, LanguageMessageKey.INVENTORY_NAME_EXISTED);
-                });
+        invenInventory.findInventoriesByName(inventoryRequest.getName()).ifPresent(name -> {
+            throw new InvalidRequestException(error, LanguageMessageKey.INVENTORY_NAME_EXISTED);
+        });
 
         Inventory inventory = objectMapper.convertValue(inventoryRequest, Inventory.class);
         ObjectId inventoryId = new ObjectId();
@@ -40,13 +44,12 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
 
     @Override
     public Optional<InventoryResponse> findOneById(String inventoryId) {
-        Optional<List<Inventory>> inventories = repository.getInventories(Map.ofEntries(Map.entry("_id", inventoryId)),
-                "", 0, 0, "");
+        Optional<Inventory> inventories = invenInventory.findInventoryById(inventoryId);
         inventories.orElseThrow(() -> {
             throw new ResourceNotFoundException(LanguageMessageKey.INVENTORY_NOT_FOUND);
         });
 
-        Inventory inventory = inventories.get().get(0);
+        Inventory inventory = inventories.get();
         return Optional.of(new InventoryResponse(inventory));
     }
 
@@ -69,10 +72,10 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
 
     @Override
     public void deleteById(String inventoryId) {
-        repository.getInventories(Map.ofEntries(Map.entry("_id", inventoryId)),
-                "", 0, 0, "").orElseThrow(() -> {
-                    throw new ResourceNotFoundException(LanguageMessageKey.INVENTORY_NOT_FOUND);
-                });
+        invenInventory.findInventoryById(inventoryId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(LanguageMessageKey.INVENTORY_NOT_FOUND);
+        });
+
         // #### TODO: validate if any Template use
 
         repository.delete(Map.ofEntries(Map.entry("_id", inventoryId)));
