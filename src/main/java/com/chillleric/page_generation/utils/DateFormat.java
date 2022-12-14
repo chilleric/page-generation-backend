@@ -3,7 +3,6 @@ package com.chillleric.page_generation.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.exception.InvalidRequestException;
 
@@ -21,7 +20,8 @@ public class DateFormat {
         try {
             result = sdf.format(date);
         } catch (Exception e) {
-            throw new InvalidRequestException(new HashMap<>(), LanguageMessageKey.INVALID_DATE_FORMAT);
+            throw new InvalidRequestException(new HashMap<>(),
+                    LanguageMessageKey.INVALID_DATE_FORMAT);
         }
         return result;
     }

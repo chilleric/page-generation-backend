@@ -1,8 +1,7 @@
 package com.chillleric.page_generation.constant;
 
 public enum ResponseType {
-    PUBLIC("public"),
-    PRIVATE("private");
+    PUBLIC("public"), PRIVATE("private");
 
     private String responseType;
 

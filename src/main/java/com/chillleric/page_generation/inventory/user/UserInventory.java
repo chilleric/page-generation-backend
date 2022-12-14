@@ -1,7 +1,6 @@
 package com.chillleric.page_generation.inventory.user;
 
 import java.util.Optional;
-
 import com.chillleric.page_generation.repository.user.User;
 
 public interface UserInventory {

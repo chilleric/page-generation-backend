@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.exception.BadSqlException;
 import com.chillleric.page_generation.log.AppLogger;
@@ -28,9 +26,13 @@ public abstract class AbstractMongoRepo {
 
   protected AppLogger APP_LOGGER = LoggerFactory.getLogger(LoggerType.APPLICATION);
 
+  public long getTotalPage(Map<String, String> allParams, Class<?> clazz) {
+    Query query = this.generateQueryMongoDB(allParams, clazz, "", "", 0, 0);
+    return authenticationTemplate.count(query, clazz);
+  }
+
   protected Query generateQueryMongoDB(Map<String, String> allParams, Class<?> clazz,
-      String keySort,
-      String sortField, int page, int pageSize) {
+      String keySort, String sortField, int page, int pageSize) {
     Query query = new Query();
     Field[] fields = clazz.getDeclaredFields();
     List<Criteria> allCriteria = new ArrayList<>();
@@ -46,8 +48,7 @@ public abstract class AbstractMongoRepo {
           if (field.getType() == ObjectId.class) {
             for (String value : values) {
               try {
-                multipleCriteria.add(
-                    Criteria.where(items.getKey()).is(new ObjectId(value)));
+                multipleCriteria.add(Criteria.where(items.getKey()).is(new ObjectId(value)));
               } catch (IllegalArgumentException e) {
                 APP_LOGGER.error(e.getMessage());
                 throw new BadSqlException(LanguageMessageKey.SERVER_ERROR);
@@ -118,10 +119,5 @@ public abstract class AbstractMongoRepo {
       APP_LOGGER.error(e.getMessage());
       return Optional.empty();
     }
-  }
-
-  public long getTotalPage(Map<String, String> allParams, Class<?> clazz) {
-    Query query = this.generateQueryMongoDB(allParams, clazz, "", "", 0, 0);
-    return authenticationTemplate.count(query, clazz);
   }
 }

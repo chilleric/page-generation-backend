@@ -3,10 +3,8 @@ package com.chillleric.page_generation.repository.inventory;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import com.chillleric.page_generation.repository.AbstractMongoRepo;
 
 @Repository
@@ -18,9 +16,10 @@ public class InventoryRepositoryImpl extends AbstractMongoRepo implements Invent
     }
 
     @Override
-    public Optional<List<Inventory>> getInventories(Map<String, String> allParams, String keySort, int page,
-            int pageSize, String sortField) {
-        Query query = generateQueryMongoDB(allParams, Inventory.class, keySort, sortField, page, pageSize);
+    public Optional<List<Inventory>> getInventories(Map<String, String> allParams, String keySort,
+            int page, int pageSize, String sortField) {
+        Query query = generateQueryMongoDB(allParams, Inventory.class, keySort, sortField, page,
+                pageSize);
 
         Optional<List<Inventory>> inventories = replaceFind(query, Inventory.class);
         return inventories;

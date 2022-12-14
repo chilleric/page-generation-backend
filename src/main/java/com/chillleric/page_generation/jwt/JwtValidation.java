@@ -1,16 +1,12 @@
 package com.chillleric.page_generation.jwt;
 
+import static java.util.Map.entry;
 import java.util.Date;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
-import static java.util.Map.entry;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -39,9 +35,9 @@ public class JwtValidation {
         try {
             Algorithm algorithm = Algorithm.HMAC512(JWT_SECRET);
             String token = JWT.create()
-                    .withPayload(Map.ofEntries(entry("userId", userId), entry("deviceId", deviceId)))
-                    .withExpiresAt(expiryDate)
-                    .sign(algorithm);
+                    .withPayload(
+                            Map.ofEntries(entry("userId", userId), entry("deviceId", deviceId)))
+                    .withExpiresAt(expiryDate).sign(algorithm);
             return token;
         } catch (JWTCreationException exception) {
             return "";

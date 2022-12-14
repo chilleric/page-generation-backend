@@ -1,7 +1,6 @@
 package com.chillleric.page_generation.service.login;
 
 import java.util.Optional;
-
 import com.chillleric.page_generation.dto.login.LoginRequest;
 import com.chillleric.page_generation.dto.login.LoginResponse;
 import com.chillleric.page_generation.dto.login.RegisterRequest;

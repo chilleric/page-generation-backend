@@ -7,8 +7,8 @@ import java.util.Optional;
 public interface InventoryRepository {
     void create(Inventory inventory);
 
-    Optional<List<Inventory>> getInventories(Map<String, String> allParams, String keySort, int page, int pageSize,
-            String sortField);
+    Optional<List<Inventory>> getInventories(Map<String, String> allParams, String keySort,
+            int page, int pageSize, String sortField);
 
     long getTotalPage(Map<String, String> allParams);
 
