@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.exception.BadSqlException;
 import com.chillleric.page_generation.log.AppLogger;

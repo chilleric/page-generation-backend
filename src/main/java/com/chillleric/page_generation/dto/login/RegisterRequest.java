@@ -4,10 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.constant.TypeValidation;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

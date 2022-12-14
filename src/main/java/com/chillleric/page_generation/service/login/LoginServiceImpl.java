@@ -6,13 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.constant.TypeValidation;
 import com.chillleric.page_generation.dto.login.LoginRequest;
@@ -75,20 +73,17 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
     if (!user.isVerified()) {
       return Optional.of(new LoginResponse("", "", false, true));
     }
-    if (!bCryptPasswordEncoder().matches(loginRequest.getPassword(),
-        user.getPassword())) {
+    if (!bCryptPasswordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
       error.put("password", LanguageMessageKey.PASSWORD_NOT_MATCH);
       throw new InvalidRequestException(error, LanguageMessageKey.PASSWORD_NOT_MATCH);
     }
     Date now = new Date();
     if (user.isVerify2FA()) {
       String verify2FACode = RandomStringUtils.randomAlphabetic(6).toUpperCase();
-      emailService
-          .sendSimpleMail(new EmailDetail(user.getEmail(), verify2FACode,
-              "OTP"));
+      emailService.sendSimpleMail(new EmailDetail(user.getEmail(), verify2FACode, "OTP"));
       Date expiredDate = new Date(now.getTime() + 5 * 60 * 1000L);
-      Optional<Code> codes = codeRepository.getCodesByType(user.get_id().toString(),
-          TypeCode.VERIFY2FA.name());
+      Optional<Code> codes =
+          codeRepository.getCodesByType(user.get_id().toString(), TypeCode.VERIFY2FA.name());
       if (codes.isPresent()) {
         Code code = codes.get();
         code.setCode(verify2FACode);
@@ -153,8 +148,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
     String newCode = RandomStringUtils.randomAlphabetic(6).toUpperCase();
     Date now = new Date();
     Date expiredDate = new Date(now.getTime() + 5 * 60 * 1000L);
-    Optional<Code> codes = codeRepository.getCodesByType(user.get_id().toString(),
-        TypeCode.REGISTER.name());
+    Optional<Code> codes =
+        codeRepository.getCodesByType(user.get_id().toString(), TypeCode.REGISTER.name());
     if (codes.isPresent()) {
       Code code = codes.get();
       code.setCode(newCode);
@@ -164,8 +159,7 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
       Code code = new Code(null, user.get_id(), TypeCode.REGISTER, newCode, expiredDate);
       codeRepository.insertAndUpdateCode(code);
     }
-    emailService
-        .sendSimpleMail(new EmailDetail(user.getEmail(), newCode, "OTP"));
+    emailService.sendSimpleMail(new EmailDetail(user.getEmail(), newCode, "OTP"));
 
   }
 
@@ -177,8 +171,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
           .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_EMAIL));
     }
     Date now = new Date();
-    Optional<Code> codes = codeRepository.getCodesByType(user.get_id().toString(),
-        TypeCode.REGISTER.name());
+    Optional<Code> codes =
+        codeRepository.getCodesByType(user.get_id().toString(), TypeCode.REGISTER.name());
     if (codes.isPresent()) {
       Code code = codes.get();
       if (code.getCode().compareTo(inputCode) != 0) {
@@ -200,8 +194,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
     String newCode = RandomStringUtils.randomAlphabetic(6).toUpperCase();
     Date now = new Date();
     Date expiredDate = new Date(now.getTime() + 5 * 60 * 1000L);
-    Optional<Code> codes = codeRepository.getCodesByType(userCheckMail.get_id().toString(),
-        TypeCode.REGISTER.name());
+    Optional<Code> codes =
+        codeRepository.getCodesByType(userCheckMail.get_id().toString(), TypeCode.REGISTER.name());
     if (codes.isPresent()) {
       Code code = codes.get();
       code.setCode(newCode);
@@ -211,9 +205,7 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
       Code code = new Code(null, userCheckMail.get_id(), TypeCode.REGISTER, newCode, expiredDate);
       codeRepository.insertAndUpdateCode(code);
     }
-    emailService
-        .sendSimpleMail(new EmailDetail(userCheckMail.getEmail(), newCode,
-            "OTP"));
+    emailService.sendSimpleMail(new EmailDetail(userCheckMail.getEmail(), newCode, "OTP"));
 
   }
 
@@ -230,10 +222,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
       user = userInventory.findUserByUsername(email)
           .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_EMAIL));
     }
-    user
-        .setPassword(
-            bCryptPasswordEncoder().encode(
-                Base64.getEncoder().encodeToString(defaultPassword.getBytes())));
+    user.setPassword(bCryptPasswordEncoder()
+        .encode(Base64.getEncoder().encodeToString(defaultPassword.getBytes())));
     repository.insertAndUpdate(user);
     emailService.sendSimpleMail(new EmailDetail(user.getEmail(),
         "Username: " + user.getUsername() + " \n" + "Password: " + defaultPassword,
@@ -254,8 +244,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
           .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_EMAIL));
     }
     Date now = new Date();
-    Optional<Code> codes = codeRepository.getCodesByType(user.get_id().toString(),
-        TypeCode.VERIFY2FA.name());
+    Optional<Code> codes =
+        codeRepository.getCodesByType(user.get_id().toString(), TypeCode.VERIFY2FA.name());
     if (codes.isPresent()) {
       Code code = codes.get();
       if (code.getCode().compareTo(inputCode) != 0) {
@@ -290,8 +280,8 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
     String newCode = RandomStringUtils.randomAlphabetic(6).toUpperCase();
     Date now = new Date();
     Date expiredDate = new Date(now.getTime() + 5 * 60 * 1000L);
-    Optional<Code> codes = codeRepository.getCodesByType(user.get_id().toString(),
-        TypeCode.VERIFY2FA.name());
+    Optional<Code> codes =
+        codeRepository.getCodesByType(user.get_id().toString(), TypeCode.VERIFY2FA.name());
     if (codes.isPresent()) {
       Code code = codes.get();
       code.setCode(newCode);
@@ -301,9 +291,7 @@ public class LoginServiceImpl extends AbstractService<UserRepository> implements
       Code code = new Code(null, user.get_id(), TypeCode.VERIFY2FA, newCode, expiredDate);
       codeRepository.insertAndUpdateCode(code);
     }
-    emailService
-        .sendSimpleMail(new EmailDetail(user.getEmail(), newCode,
-            "OTP"));
+    emailService.sendSimpleMail(new EmailDetail(user.getEmail(), newCode, "OTP"));
   }
 
 }

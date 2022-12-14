@@ -2,7 +2,6 @@ package com.chillleric.page_generation.dto.user;
 
 import java.util.Date;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

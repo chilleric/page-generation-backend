@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.chillleric.page_generation.constant.DateTime;
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.dto.common.ListWrapperResponse;
@@ -48,9 +46,8 @@ public class UserServiceImpl extends AbstractService<UserRepository> implements 
         User user = objectMapper.convertValue(userRequest, User.class);
         ObjectId newId = new ObjectId();
         user.set_id(newId);
-        user.setPassword(
-                bCryptPasswordEncoder().encode(
-                        Base64.getEncoder().encodeToString(defaultPassword.getBytes())));
+        user.setPassword(bCryptPasswordEncoder()
+                .encode(Base64.getEncoder().encodeToString(defaultPassword.getBytes())));
         user.setTokens(new HashMap<>());
         user.setCreated(currentTime);
         user.setModified(currentTime);
@@ -60,8 +57,8 @@ public class UserServiceImpl extends AbstractService<UserRepository> implements 
 
     @Override
     public void updateUserById(String userId, UserRequest userRequest) {
-        User user = userInventory.findUserById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
+        User user = userInventory.findUserById(userId).orElseThrow(
+                () -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
         validate(userRequest);
         Map<String, String> error = generateError(UserRequest.class);
         userInventory.findUserByEmail(userRequest.getEmail()).ifPresent(thisEmail -> {
@@ -100,51 +97,47 @@ public class UserServiceImpl extends AbstractService<UserRepository> implements 
 
     @Override
     public Optional<UserResponse> findOneUserById(String userId) {
-        User user = userInventory.findUserById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
-        return Optional.of(
-                new UserResponse(user.get_id().toString(), user.getUsername(), user.getPassword(),
-                        user.getGender(), user.getDob(), user.getAddress(), user.getFirstName(),
-                        user.getLastName(), user.getEmail(), user.getPhone(), user.getTokens(),
-                        DateFormat.toDateString(user.getCreated(),
-                                DateTime.YYYY_MM_DD),
-                        DateFormat.toDateString(user.getModified(), DateTime.YYYY_MM_DD), user.isVerified(),
-                        user.isVerify2FA(), user.getDeleted()));
+        User user = userInventory.findUserById(userId).orElseThrow(
+                () -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
+        return Optional.of(new UserResponse(user.get_id().toString(), user.getUsername(),
+                user.getPassword(), user.getGender(), user.getDob(), user.getAddress(),
+                user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(),
+                user.getTokens(), DateFormat.toDateString(user.getCreated(), DateTime.YYYY_MM_DD),
+                DateFormat.toDateString(user.getModified(), DateTime.YYYY_MM_DD), user.isVerified(),
+                user.isVerify2FA(), user.getDeleted()));
     }
 
     @Override
     public Optional<ListWrapperResponse<UserResponse>> getUsers(Map<String, String> allParams,
-            String keySort, int page,
-            int pageSize, String sortField,
-            String loginId) {
+            String keySort, int page, int pageSize, String sortField, String loginId) {
         if (allParams.containsKey("_id")) {
             String[] idList = allParams.get("_id").split(",");
             ArrayList<String> check = new ArrayList<>(Arrays.asList(idList));
             if (check.size() == 0) {
-                return Optional.of(
-                        new ListWrapperResponse<UserResponse>(new ArrayList<>(), page, pageSize, 0));
+                return Optional.of(new ListWrapperResponse<UserResponse>(new ArrayList<>(), page,
+                        pageSize, 0));
             }
             allParams.put("_id", generateParamsValue(check));
         }
 
         List<User> users = repository.getUsers(allParams, "", page, pageSize, sortField).get();
         return Optional.of(new ListWrapperResponse<UserResponse>(
-                users.stream().map(user -> new UserResponse(user.get_id().toString(), user.getUsername(),
-                        user.getPassword(), user.getGender(), user.getDob(), user.getAddress(),
-                        user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(),
-                        user.getTokens(), DateFormat.toDateString(user.getCreated(),
-                                DateTime.YYYY_MM_DD),
-                        DateFormat.toDateString(user.getModified(), DateTime.YYYY_MM_DD),
-                        user.isVerified(), user.isVerify2FA(), user.getDeleted())).collect(Collectors.toList()),
-                page,
-                pageSize,
-                repository.getTotalPage(allParams)));
+                users.stream()
+                        .map(user -> new UserResponse(user.get_id().toString(), user.getUsername(),
+                                user.getPassword(), user.getGender(), user.getDob(),
+                                user.getAddress(), user.getFirstName(), user.getLastName(),
+                                user.getEmail(), user.getPhone(), user.getTokens(),
+                                DateFormat.toDateString(user.getCreated(), DateTime.YYYY_MM_DD),
+                                DateFormat.toDateString(user.getModified(), DateTime.YYYY_MM_DD),
+                                user.isVerified(), user.isVerify2FA(), user.getDeleted()))
+                        .collect(Collectors.toList()),
+                page, pageSize, repository.getTotalPage(allParams)));
     }
 
     @Override
     public void changeStatusUser(String userId) {
-        User user = userInventory.findUserById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
+        User user = userInventory.findUserById(userId).orElseThrow(
+                () -> new ResourceNotFoundException(LanguageMessageKey.NOT_FOUND_USER));
         if (user.getUsername().compareTo("super_admin") == 0) {
             throw new InvalidRequestException(new HashMap<>(), LanguageMessageKey.FORBIDDEN);
         }

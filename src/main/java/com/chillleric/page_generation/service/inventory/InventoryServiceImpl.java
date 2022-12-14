@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.dto.common.ListWrapperResponse;
 import com.chillleric.page_generation.dto.inventory.InventoryRequest;
@@ -21,7 +19,8 @@ import com.chillleric.page_generation.repository.inventory.InventoryRepository;
 import com.chillleric.page_generation.service.AbstractService;
 
 @Service
-public class InventoryServiceImpl extends AbstractService<InventoryRepository> implements InventoryService {
+public class InventoryServiceImpl extends AbstractService<InventoryRepository>
+        implements InventoryService {
 
     @Autowired
     private InvenInventory invenInventory;
@@ -57,24 +56,21 @@ public class InventoryServiceImpl extends AbstractService<InventoryRepository> i
     }
 
     @Override
-    public Optional<ListWrapperResponse<InventoryResponse>> findAll(Map<String, String> allParams, String keySort,
-            int page, int pageSize,
-            String sortField) {
-        List<Inventory> inventories = repository.getInventories(allParams,
-                "", page, pageSize, sortField).get();
+    public Optional<ListWrapperResponse<InventoryResponse>> findAll(Map<String, String> allParams,
+            String keySort, int page, int pageSize, String sortField) {
+        List<Inventory> inventories =
+                repository.getInventories(allParams, "", page, pageSize, sortField).get();
         if (inventories.size() == 0) {
             return Optional.empty();
         }
         return Optional.of(new ListWrapperResponse<InventoryResponse>(
                 inventories.stream()
-                        .map(inventory -> new InventoryResponse(inventory.get_id().toString(), inventory.getName(),
-                                inventory.getTargetId(), inventory.getType(), inventory.getCss(),
-                                inventory.getSpecial(), inventory.getChildren(), inventory.getTypeList(),
-                                inventory.getNumber()))
+                        .map(inventory -> new InventoryResponse(inventory.get_id().toString(),
+                                inventory.getName(), inventory.getTargetId(), inventory.getType(),
+                                inventory.getCss(), inventory.getSpecial(), inventory.getChildren(),
+                                inventory.getTypeList(), inventory.getNumber()))
                         .collect(Collectors.toList()),
-                page,
-                pageSize,
-                repository.getTotalPage(allParams)));
+                page, pageSize, repository.getTotalPage(allParams)));
     }
 
     @Override

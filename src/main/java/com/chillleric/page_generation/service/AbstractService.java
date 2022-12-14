@@ -4,13 +4,10 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.chillleric.page_generation.constant.LanguageMessageKey;
 import com.chillleric.page_generation.constant.ResponseType;
 import com.chillleric.page_generation.exception.InvalidRequestException;
@@ -38,8 +35,8 @@ public abstract class AbstractService<r> {
 
   @PostConstruct
   public void init() {
-    objectMapper = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper =
+        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
   protected String generateParamsValue(List<String> list) {
@@ -59,9 +56,8 @@ public abstract class AbstractService<r> {
 
   protected <T> void validate(T request) {
     boolean isError = false;
-    Map<String, String> errors = objectValidator.validateRequestThenReturnMessage(
-        generateError(request.getClass()),
-        request);
+    Map<String, String> errors = objectValidator
+        .validateRequestThenReturnMessage(generateError(request.getClass()), request);
     for (Map.Entry<String, String> items : errors.entrySet()) {
       if (items.getValue().length() > 0) {
         isError = true;
