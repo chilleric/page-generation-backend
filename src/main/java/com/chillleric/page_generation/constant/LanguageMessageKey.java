@@ -142,6 +142,7 @@ public class LanguageMessageKey {
     public static final String INVENTORY_SPECIAL_REQUIRED = "inventorySpecialRequired";
     public static final String INVENTORY_CHILDREN_REQUIRED = "inventoryChildrenRequired";
     public static final String INVENTORY_TYPE_LIST_REQUIRED = "inventoryTypeListRequired";
+    public static final String INVENTORY_DATA_REQUIRED = "inventoryDataRequired";
 
     public static final String INVENTORY_NAME_EXISTED = "inventoryNameExisted";
 
